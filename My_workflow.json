@@ -1,0 +1,148 @@
+{
+  "name": "My workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "path": "2ddd7e46-2321-4d4b-b971-df952df68cd3",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        60,
+        59.90625
+      ],
+      "id": "5d551493-3ddb-4772-b70e-511396d4ec95",
+      "name": "Webhook",
+      "webhookId": "2ddd7e46-2321-4d4b-b971-df952df68cd3"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        260,
+        340
+      ],
+      "id": "ab1ff788-7437-41d0-b58f-9dbb8164dda1",
+      "name": "When chat message received",
+      "webhookId": "859622d3-6bbf-4e17-821b-a90346dee121"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "Mood\tResponse\nHappy\t\"That's wonderful! 🌟 Keep shining today!\"\nNeutral\t\"Here’s a journaling prompt to explore your thoughts ✍️...\"\nSad/Stressed\t\"It’s okay to feel that way. Try this 2-minute breathing app 💨: [link]\"",
+        "batching": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.7,
+      "position": [
+        580,
+        160
+      ],
+      "id": "23b93cf8-867a-4c75-830d-fdd93e24521c",
+      "name": "Basic LLM Chain"
+    },
+    {
+      "parameters": {
+        "model": "Mental health",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatAzureOpenAi",
+      "typeVersion": 1,
+      "position": [
+        700,
+        360
+      ],
+      "id": "209c9e7c-555a-4990-b334-d7fe01c83601",
+      "name": "Azure OpenAI Chat Model",
+      "credentials": {
+        "azureOpenAiApi": {
+          "id": "JWvmcoM7Ju4yZCRD",
+          "name": "Azure Open AI account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "chat",
+        "chatId": "Fyii234_bot"
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        880,
+        -40
+      ],
+      "id": "571cd82e-1eaf-49b6-a485-6becd005e909",
+      "name": "Telegram",
+      "webhookId": "81a3d7e2-03a0-4a32-a01a-10d6271e9b3a",
+      "credentials": {
+        "telegramApi": {
+          "id": "wX41IQdrmgGaBGGj",
+          "name": "Telegram account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Azure OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Basic LLM Chain": {
+      "main": [
+        [
+          {
+            "node": "Telegram",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "748c1b2b-60a9-4bed-bd6e-40a87dad7897",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "60be27d1b8207e6886631284ab00f0e210ad030cef909d5bca83b699e664aa9d"
+  },
+  "id": "bf1niKPT1cLvHMEK",
+  "tags": []
+}
